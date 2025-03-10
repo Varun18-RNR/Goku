@@ -1,0 +1,105 @@
+# java code for tik tac to game
+import java.util.Scanner;
+
+public class TicTacToe {
+
+    // Initialize the board
+    private static char[][] board = {
+        {' ', ' ', ' '},
+        {' ', ' ', ' '},
+        {' ', ' ', ' '}
+    };
+
+    // To keep track of whose turn it is
+    private static char currentPlayer = 'X';
+    
+    // Scanner for user input
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        // Main game loop
+        while (true) {
+            printBoard();
+            playerMove();
+            if (isWinner()) {
+                printBoard();
+                System.out.println("Player " + currentPlayer + " wins!");
+                break;
+            }
+            if (isBoardFull()) {
+                printBoard();
+                System.out.println("It's a draw!");
+                break;
+            }
+            switchPlayer();
+        }
+    }
+
+    // Prints the board
+    private static void printBoard() {
+        System.out.println("-----------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("-----------");
+        }
+    }
+
+    // Handles player move
+    private static void playerMove() {
+        int row, col;
+        while (true) {
+            System.out.println("Player " + currentPlayer + ", enter your move (row and column): ");
+            row = scanner.nextInt();
+            col = scanner.nextInt();
+
+            // Check if the move is valid
+            if (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == ' ') {
+                board[row][col] = currentPlayer;
+                break;
+            } else {
+                System.out.println("Invalid move, try again.");
+            }
+        }
+    }
+
+    // Switches the player
+    private static void switchPlayer() {
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+    }
+
+    // Checks if the board is full (draw condition)
+    private static boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Checks if there is a winner
+    private static boolean isWinner() {
+        // Check rows, columns, and diagonals
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) {
+                return true;
+            }
+            if (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer) {
+                return true;
+            }
+        }
+        if (board[0][0] == currentPlayer && board[1][1] == currentPlayer && board[2][2] == currentPlayer) {
+            return true;
+        }
+        if (board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0] == currentPlayer) {
+            return true;
+        }
+        return false;
+    }
+}
